@@ -12,15 +12,21 @@ import { getEmotionImage } from "./util/get-emotion-image";
 const mockData = [
   {
     id: 1,
-    createdData: new Date().getTime(),
+    createdDate: new Date("2025-07-30").getTime(),
     emotionId: 1,
     content: "1번 일기 내용",
   },
   {
     id: 2,
-    createdData: new Date().getTime(),
+    createdDate: new Date("2025-07-29").getTime(),
     emotionId: 2,
     content: "2번 일기 내용",
+  },
+  {
+    id: 3,
+    createdDate: new Date("2025-05-29").getTime(),
+    emotionId: 3,
+    content: "3번 일기 내용",
   },
 ];
 
@@ -51,15 +57,15 @@ export const DiaryDispatchContext = createContext();
 
 function App() {
   const [data, dispatch] = useReducer(reducer, mockData);
-  const idRef = useRef(3);
+  const idRef = useRef(4);
 
   // 새로운 일기 추가
-  const onCreate = (createdData, emotionId, content) => {
+  const onCreate = (createdDate, emotionId, content) => {
     dispatch({
       type: "CREATE",
       data: {
         id: idRef.current++,
-        createdData,
+        createdDate,
         emotionId,
         content,
       },
@@ -67,12 +73,12 @@ function App() {
   };
 
   // 기존 일기 수정
-  const onUpdate = (id, createdData, emotionId, content) => {
+  const onUpdate = (id, createdDate, emotionId, content) => {
     dispatch({
       type: "UPDATE",
       data: {
         id,
-        createdData,
+        createdDate,
         emotionId,
         content,
       },
