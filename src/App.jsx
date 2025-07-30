@@ -1,57 +1,132 @@
 import "./App.css";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useReducer, useRef, createContext } from "react";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
+import Edit from "./pages/Edit";
 import Notfound from "./pages/Notfound";
-import Button from "./components/Button";
-import Header from "./components/Header";
 
 import { getEmotionImage } from "./util/get-emotion-image";
+
+const mockData = [
+  {
+    id: 1,
+    createdData: new Date().getTime(),
+    emotionId: 1,
+    content: "1번 일기 내용",
+  },
+  {
+    id: 2,
+    createdData: new Date().getTime(),
+    emotionId: 2,
+    content: "2번 일기 내용",
+  },
+];
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "CREATE":
+      return [action.data, ...state];
+    case "UPDATE":
+      return state.map((item) =>
+        String(item.id) === String(action.data.id) ? action.data : item
+      );
+    case "DELETE":
+      return state.filter((item) => String(item.id) !== String(action.id));
+    default:
+      return state;
+  }
+}
 
 // 1. "/" : 모든 일기를 조회하는 HOME 페이지
 // 2. "/new" :  새로운 일기를 작성하는 NEW 페이지
 // 3. "/diary" : 일기를 상세히 조회하는 Diary 페이지
-// 4. "*" :  whildcard(*) : 잘못된 페이지 조회시
-// Routes 컴포넌트 자식은 <Route>만 가능
+// 4. "./edit" : 일기를 수정하는 Edit 페이지
+// 5. "*" :  whildcard(*) : 잘못된 페이지 조회시
+
+// Context 활용
+const DiaryStateContext = createContext();
+const DiaryDispatchContext = createContext();
+
 function App() {
-  // useNavigate
-  // -> 페이지를 실제로 이동시키는 Navigate 함수 반환
-  const nav = useNavigate();
+  const [data, dispatch] = useReducer(reducer, mockData);
+  const idRef = useRef(3);
+
+  // 새로운 일기 추가
+  const onCreate = (createdData, emotionId, content) => {
+    dispatch({
+      type: "CREATE",
+      data: {
+        id: idRef.current++,
+        createdData,
+        emotionId,
+        content,
+      },
+    });
+  };
+
+  // 기존 일기 수정
+  const onUpdate = (id, createdData, emotionId, content) => {
+    dispatch({
+      type: "UPDATE",
+      data: {
+        id,
+        createdData,
+        emotionId,
+        content,
+      },
+    });
+  };
+
+  // 기존 일기 삭제
+  const onDelete = (id) => {
+    dispatch({
+      type: "DELETE",
+      id,
+    });
+  };
 
   return (
     <>
-      <Header
-        title={"Header"}
-        leftChild={<Button text={"Left"} />}
-        rightChild={<Button text={"Right"} />}
-      />
-      <Button
-        text={"123"}
+      <button
         onClick={() => {
-          console.log("123클릭");
+          onCreate(new Date().getTime(), 1, "TEST");
         }}
-      />
-      <Button
-        text={"123"}
-        type={"POSITIVE"}
+      >
+        새로운 일기 추가 test
+      </button>
+      <button
         onClick={() => {
-          console.log("123클릭");
+          onUpdate(1, new Date().getTime(), 3, "수정된 일기입니다.");
         }}
-      />
-      <Button
-        text={"123"}
-        type={"NEGATIVE"}
+      >
+        일기 수정 test
+      </button>
+      <button
         onClick={() => {
-          console.log("123클릭");
+          onDelete(1);
         }}
-      />
-      <Routes>
-        <Route path="/" element={<Home></Home>}></Route>
-        <Route path="/new" element={<New></New>}></Route>
-        <Route path="/diary/:id" element={<Diary></Diary>}></Route>
-        <Route path="*" element={<Notfound></Notfound>}></Route>
-      </Routes>
+      >
+        일기 삭제 test
+      </button>
+      <DiaryStateContext.Provider value={data}>
+        <DiaryDispatchContext.Provider
+          value={{
+            onCreate,
+            onUpdate,
+            onDelete,
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<Home></Home>}></Route>
+            <Route path="/new" element={<New></New>}></Route>
+            <Route path="/diary/:id" element={<Diary></Diary>}></Route>
+            <Route path="/edit/:id" element={<Edit></Edit>}></Route>
+            <Route path="*" element={<Notfound></Notfound>}></Route>
+          </Routes>
+        </DiaryDispatchContext.Provider>
+      </DiaryStateContext.Provider>
     </>
   );
 }
