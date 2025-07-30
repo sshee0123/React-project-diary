@@ -46,8 +46,8 @@ function reducer(state, action) {
 // 5. "*" :  whildcard(*) : 잘못된 페이지 조회시
 
 // Context 활용
-const DiaryStateContext = createContext();
-const DiaryDispatchContext = createContext();
+export const DiaryStateContext = createContext();
+export const DiaryDispatchContext = createContext();
 
 function App() {
   const [data, dispatch] = useReducer(reducer, mockData);
@@ -89,27 +89,6 @@ function App() {
 
   return (
     <>
-      <button
-        onClick={() => {
-          onCreate(new Date().getTime(), 1, "TEST");
-        }}
-      >
-        새로운 일기 추가 test
-      </button>
-      <button
-        onClick={() => {
-          onUpdate(1, new Date().getTime(), 3, "수정된 일기입니다.");
-        }}
-      >
-        일기 수정 test
-      </button>
-      <button
-        onClick={() => {
-          onDelete(1);
-        }}
-      >
-        일기 삭제 test
-      </button>
       <DiaryStateContext.Provider value={data}>
         <DiaryDispatchContext.Provider
           value={{
@@ -119,11 +98,11 @@ function App() {
           }}
         >
           <Routes>
-            <Route path="/" element={<Home></Home>}></Route>
-            <Route path="/new" element={<New></New>}></Route>
-            <Route path="/diary/:id" element={<Diary></Diary>}></Route>
-            <Route path="/edit/:id" element={<Edit></Edit>}></Route>
-            <Route path="*" element={<Notfound></Notfound>}></Route>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/new" element={<New />}></Route>
+            <Route path="/diary/:id" element={<Diary />}></Route>
+            <Route path="/edit/:id" element={<Edit />}></Route>
+            <Route path="*" element={<Notfound />}></Route>
           </Routes>
         </DiaryDispatchContext.Provider>
       </DiaryStateContext.Provider>
