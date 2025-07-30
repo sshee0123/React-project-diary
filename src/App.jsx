@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
@@ -11,13 +11,29 @@ import Notfound from "./pages/Notfound";
 // 4. "*" :  whildcard(*) : 잘못된 페이지 조회시
 // Routes 컴포넌트 자식은 <Route>만 가능
 function App() {
+  // useNavigate
+  // -> 페이지를 실제로 이동시키는 Navigate 함수 반환
+  const nav = useNavigate();
+
+  const onClickButton = () => {
+    nav("/new");
+  };
+
   return (
-    <Routes>
-      <Route path="/" element={<Home></Home>}></Route>
-      <Route path="/new" element={<New></New>}></Route>
-      <Route path="/diary" element={<Diary></Diary>}></Route>
-      <Route path="*" element={<Notfound></Notfound>}></Route>
-    </Routes>
+    <>
+      <div>
+        <Link to={"/"}>Home</Link>
+        <Link to={"/new"}>New</Link>
+        <Link to={"/diary"}>Diary</Link>
+      </div>
+      <button onClick={onClickButton}>New 페이지로 이동</button>
+      <Routes>
+        <Route path="/" element={<Home></Home>}></Route>
+        <Route path="/new" element={<New></New>}></Route>
+        <Route path="/diary" element={<Diary></Diary>}></Route>
+        <Route path="*" element={<Notfound></Notfound>}></Route>
+      </Routes>
+    </>
   );
 }
 
