@@ -30,7 +30,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/new" element={<New></New>}></Route>
-        <Route path="/diary" element={<Diary></Diary>}></Route>
+        <Route path="/diary/:id" element={<Diary></Diary>}></Route>
         <Route path="*" element={<Notfound></Notfound>}></Route>
       </Routes>
     </>
