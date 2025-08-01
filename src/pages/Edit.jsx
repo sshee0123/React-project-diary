@@ -5,27 +5,15 @@ import Editor from "../components/Editor";
 import { DiaryStateContext, DiaryDispatchContext } from "../App";
 import { useContext, useEffect, useState } from "react";
 
+import useDiary from "../hooks/useDiary";
+
 const Edit = () => {
   const nav = useNavigate();
   const params = useParams();
-  const data = useContext(DiaryStateContext);
   const { onDelete, onUpdate } = useContext(DiaryDispatchContext);
-  const [curDiaryItem, setCurDiaryItem] = useState();
 
-  // useEffect : 수정할 id값 변경될 때만 실행되는 콜백함수 실행
-  useEffect(() => {
-    // 현재 id값 내용 가져오기
-    const currentDiaryItem = data.find(
-      (item) => String(item.id) === String(params.id)
-    );
-
-    if (!currentDiaryItem) {
-      window.alert("존재하지 않는 일기입니다.");
-      nav("/", { replace: true });
-    }
-
-    setCurDiaryItem(currentDiaryItem);
-  }, [params.id]);
+  // 해당 id값 가져오는 커스텀 reacthook
+  const curDiaryItem = useDiary(params.id);
 
   // 삭제하기 버튼 클릭
   const onClickDelete = () => {
