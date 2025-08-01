@@ -56,6 +56,7 @@ export const DiaryStateContext = createContext();
 export const DiaryDispatchContext = createContext();
 
 function App() {
+  // data : 일기데이터
   const [data, dispatch] = useReducer(reducer, mockData);
   const idRef = useRef(4);
 

@@ -1,7 +1,7 @@
 import "./Editor.css";
 import EmotionItem from "./EmotionItem";
 import Button from "./Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // EmotionItem 리스트
@@ -45,7 +45,7 @@ const getStringedDate = (targetDate) => {
   return `${year}-${month}-${date}`;
 };
 
-const Editor = ({ onSubmit }) => {
+const Editor = ({ initData, onSubmit }) => {
   const nav = useNavigate();
 
   // 사용자가 입력한 오늘의 날짜, 감정, 일기를 객체로 useState 활용해 저장
@@ -54,6 +54,16 @@ const Editor = ({ onSubmit }) => {
     emotionId: 3,
     content: "",
   });
+
+  // Edit페이지에서 보낸 현재 수정할 데이터값 (initData)이 변경될 때 실행되는 콜백함수
+  useEffect(() => {
+    if (initData) {
+      setInput({
+        ...initData,
+        createdDate: new Date(Number(initData.createdDate)),
+      });
+    }
+  }, [initData]);
 
   // input 수정 이벤트 핸들러
   const onChangeInput = (e) => {
