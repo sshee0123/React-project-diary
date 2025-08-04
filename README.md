@@ -2,8 +2,8 @@
 
 one-bite react project &lt;Diary>
 
-## 배포url
-https://emotion-diary-jr5e3els2-sehuiparks-projects-49e971b3.vercel.app
+## 배포 URL
+https://emotion-diary-ten-psi.vercel.app/
 
 ## Compont
 <img width="1350" height="561" alt="image" src="https://github.com/user-attachments/assets/7c820b8f-b80c-424d-9afb-da3ef99e8fb0" />
