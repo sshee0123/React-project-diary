@@ -4,7 +4,7 @@ import Button from "../components/Button";
 import Editor from "../components/Editor";
 import { DiaryStateContext, DiaryDispatchContext } from "../App";
 import { useContext, useEffect, useState } from "react";
-
+import usePageTitle from "../hooks/usePageTitle";
 import useDiary from "../hooks/useDiary";
 
 const Edit = () => {
@@ -14,6 +14,9 @@ const Edit = () => {
 
   // 해당 id값 가져오는 커스텀 reacthook
   const curDiaryItem = useDiary(params.id);
+
+  // 페이지 타이틀 변경
+  usePageTitle(`${params.id}번 일기 수정`);
 
   // 삭제하기 버튼 클릭
   const onClickDelete = () => {

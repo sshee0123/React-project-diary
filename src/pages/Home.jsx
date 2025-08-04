@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import DiaryList from "../components/DiaryList";
 import { DiaryStateContext } from "../App";
+import usePageTitle from "../hooks/usePageTitle";
 
 // 해당 월만 필터링 되는 함수
 const getMonthlyData = (pivotDate, data) => {
@@ -39,6 +40,9 @@ const Home = () => {
   const [pivotDate, setPivotDate] = useState(new Date());
 
   const monthlyData = getMonthlyData(pivotDate, data);
+
+  // 페이지 타이틀 변경
+  usePageTitle("감정 일기장");
 
   // > 버튼 클릭 시, +1월
   const onIncreaseMonth = () => {

@@ -4,12 +4,15 @@ import Editor from "../components/Editor";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { DiaryDispatchContext } from "../App";
+import usePageTitle from "../hooks/usePageTitle";
 
 const New = () => {
   // 페이지 뒤로 가기 nav(-1)
   const nav = useNavigate();
-
   const { onCreate } = useContext(DiaryDispatchContext);
+
+  // 페이지 타이틀 변경
+  usePageTitle("새 일기 쓰기");
 
   // Editor 컴포넌트에서 새로운 일기 작성완료 로 전송한 input값
   const onSubmit = (input) => {

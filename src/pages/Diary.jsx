@@ -4,14 +4,16 @@ import Button from "../components/Button";
 import Viewer from "../components/Viewer";
 import useDiary from "../hooks/useDiary";
 import { getStringedDate } from "../util/get-stringed-date";
+import usePageTitle from "../hooks/usePageTitle";
 
 const Diary = () => {
   const nav = useNavigate();
   const params = useParams();
+  // 페이지 타이틀 변경
+  usePageTitle(`${params.id}번 일기`);
 
   // 해당 id값 가져오는 커스텀 reacthook
   const curDiaryItem = useDiary(params.id);
-  console.log(curDiaryItem);
 
   // curDiaryItem undefined 방지
   if (!curDiaryItem) {
